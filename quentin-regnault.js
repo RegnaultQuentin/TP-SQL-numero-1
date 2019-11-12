@@ -2,13 +2,40 @@ const name = "quentin-regnault"
 const promo = "B2B"
 
 const q1 = `
-  SELECT *
-  FROM Customer
+SELECT *
+FROM Track
+WHERE Milliseconds < (
+	SELECT Milliseconds
+	FROM Track
+	WHERE TrackId = 3457)
 `
 
-const q2 = ``
-const q3 = ``
-const q4 = ``
+const q2 = `
+SELECT *
+FROM Track
+WHERE MediaTypeId = (
+	SELECT MediaTypeId
+	FROM Track
+	WHERE Name = 'Rehab') 
+`
+
+
+const q3 = `
+SELECT pl.PlaylistId, pl.Name, COUNT(t.TrackId), SUM(t.Milliseconds), AVG(t.Milliseconds)
+FROM Playlist pl 
+	JOIN PlaylistTrack pt 
+		ON pl.PlaylistId = pt.PlaylistId
+	JOIN Track t
+		ON pt.TrackId = t.TrackId
+GROUP BY pl.PlaylistId, pl.Name
+`
+
+
+const q4 = `
+
+`
+
+
 const q5 = ``
 const q6 = ``
 const q7 = ``
