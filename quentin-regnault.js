@@ -32,13 +32,63 @@ GROUP BY pl.PlaylistId, pl.Name
 
 
 const q4 = `
+SELECT pl.PlaylistId, pl.Name
+FROM Playlist pl 
+	JOIN PlaylistTrack pt 
+		ON pl.PlaylistId = pt.PlaylistId
+	JOIN Track t
+		ON pt.TrackId = t.TrackId
+GROUP BY pl.PlaylistId, pl.Name
+HAVING SUM(t.Milliseconds)>AVG(t.Milliseconds)
+`
+
+
+const q5 = `
+SELECT  pl.PlaylistId, pl.Name
+FROM Playlist pl 
+	JOIN PlaylistTrack pt 
+		ON pl.PlaylistId = pt.PlaylistId
+	JOIN Track t
+		ON pt.TrackId = t.TrackId
+GROUP BY pl.PlaylistId, pl.Name
+HAVING COUNT (t.TrackId) = (
+	SELECT COUNT(t.TrackId)
+	FROM Playlist pl 
+	JOIN PlaylistTrack pt 
+		ON pl.PlaylistId = pt.PlaylistId
+	JOIN Track t
+		ON pt.TrackId = t.TrackId
+	WHERE pl.PlaylistId = 1)
+OR COUNT(t.TrackId) = (
+	SELECT COUNT(t.TrackId)
+	FROM Playlist pl 
+	JOIN PlaylistTrack pt 
+		ON pl.PlaylistId = pt.PlaylistId
+	JOIN Track t
+		ON pt.TrackId = t.TrackId
+	WHERE pl.PlaylistId = 13)
+`
+
+
+
+const q6 = `
+SELECT *
+FROM Customer c
+JOIN Invoice i
+	ON c.CustomerId = i.CustomerId
+WHERE c.Country != 'France' AND i.Total>(
+	SELECT MAX(Total)
+	FROM Invoice
+	WHERE BillingCountry = 'France')
+`
+
+
+
+const q7 = `
 
 `
 
 
-const q5 = ``
-const q6 = ``
-const q7 = ``
 const q8 = ``
 const q9 = ``
 const q10 = ``
@@ -58,40 +108,6 @@ const q23 = ``
 const q24 = ``
 const q25 = ``
 const q26 = ``
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
