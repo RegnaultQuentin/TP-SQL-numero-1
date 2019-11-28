@@ -85,9 +85,11 @@ WHERE c.Country != 'France' AND i.Total>(
 
 
 const q7 = `
-
+SELECT BillingCountry, MIN(Total), MAX(Total), AVG(Total), COUNT(Total), Total/(SELECT SUM(Total) FROM Invoice GROUP BY Total) Pct_To_Total 
+FROM Invoice  
+GROUP BY BillingCountry 
 `
-
+// Pas fini 
 
 const q8 = ``
 const q9 = ``
