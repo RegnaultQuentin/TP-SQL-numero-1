@@ -91,7 +91,15 @@ GROUP BY BillingCountry
 `
 // Pas fini 
 
-const q8 = ``
+const q8 = `
+SELECT *
+FROM Track t
+JOIN MediaType m
+	ON t.MediaTypeId = m.MediaTypeId
+`
+// Pas fini 
+
+
 const q9 = ``
 const q10 = ``
 const q11 = ``
@@ -101,7 +109,79 @@ const q14 = ``
 const q15 = ``
 const q16 = ``
 const q17 = ``
-const q18 = ``
+const q18 = `
+IF EXISTS (SELECT name FROM master.dbo.sysdatabases WHERE name = QuentinRegnault')
+    DROP DATABASE [QuentinRegnault]
+GO
+CREATE DATABASE [QuentinRegnault]
+GO
+USE [QuentinRegnault]
+GO
+
+CREATE TABLE [dbo].[User]
+(
+    [id] INT PRIMARY KEY IDENTITY,
+    [username] VARCHAR(255) CONSTRAINT User_username_NN NOT NULL,
+    [email] VARCHAR(255),
+    [superuser] BIT CONSTRAINT User_superuser_NN NOT NULL DEFAULT(0)
+);
+GO
+
+CREATE TABLE [dbo].[User_Group]
+(
+    [user_id] INT CONSTRAINT User_id_FK REFERENCES [User],
+    [group_id] INT CONSTRAINT Group_id_FK REFERENCES [Group]
+);
+GO
+
+CREATE TABLE [dbo].[User_Role]
+(
+    [user_id] INT CONSTRAINT User_id_FK REFERENCES [User],
+    [role_id] INT CONSTRAINT Role_id_FK REFERENCES [Role]
+);
+GO
+
+CREATE TABLE [dbo].[Group]
+(
+    id INT IDENTITY PRIMARY KEY,
+    name VARCHAR(255) CONSTRAINT Group_name_NN NOT NULL,
+    display_name VARCHAR(255),
+    description TEXT
+);
+GO
+
+CREATE TABLE [dbo].[Group_Role]
+(
+    [group_id] INT CONSTRAINT Group_id_FK REFERENCES [Group],
+    [role_id] INT CONSTRAINT Role_id_FK REFERENCES [Role]
+);
+GO
+
+CREATE TABLE [dbo].[Role]
+(
+    id INT IDENTITY PRIMARY KEY,
+    name VARCHAR(255) CONSTRAINT Role_name_NN NOT NULL,
+    display_name VARCHAR(255),
+    description TEXT CONSTRAINT Role_description_NN NOT NULL,
+);
+GO
+
+CREATE TABLE [dbo].[Role_Permission]
+(
+    [role_id] INT CONSTRAINT Role_id_FK REFERENCES [Role],
+    [permission_id] INT CONSTRAINT Permission_id_FK REFERENCES [Permission]
+);
+GO
+
+CREATE TABLE [dbo].[Permission]
+(
+    id INT IDENTITY PRIMARY KEY,
+    name VARCHAR(255) CONSTRAINT Permission_name_NN NOT NULL,
+    display_name VARCHAR(255),
+    description TEXT CONSTRAINT Permission_name_NN NOT NULL,
+);
+GO
+`
 const q19 = ``
 const q20 = ``
 const q21 = ``
